@@ -10,14 +10,21 @@ const quoteDisplay = document.getElementById("quoteDisplay");
 const newQuoteBtn = document.getElementById("newQuote");
 const addQuoteContainer = document.getElementById("addQuoteContainer");
 
-// Function to display a random quote
-function displayRandomQuote() {
+/**
+ * Step 2: Display a random quote
+ * Function: showRandomQuote
+ */
+function showRandomQuote() {
   const randomIndex = Math.floor(Math.random() * quotes.length);
   const quote = quotes[randomIndex];
+  
+  // Clear previous content and update
   quoteDisplay.innerHTML = `"${quote.text}" — <strong>${quote.category}</strong>`;
 }
 
-// Function to add a new quote
+/**
+ * Step 3: Add a new quote to the array and update the view
+ */
 function addQuote() {
   const textInput = document.getElementById("newQuoteText");
   const categoryInput = document.getElementById("newQuoteCategory");
@@ -29,7 +36,7 @@ function addQuote() {
     // Add to quotes array
     quotes.push({ text, category });
 
-    // Update the DOM immediately
+    // Update the display immediately to show the new quote
     quoteDisplay.innerHTML = `"${text}" — <strong>${category}</strong>`;
 
     // Clear inputs
@@ -40,7 +47,10 @@ function addQuote() {
   }
 }
 
-// Function to create Add Quote form dynamically
+/**
+ * Step 2 & 3: Create the Add Quote form dynamically
+ * This demonstrates advanced DOM manipulation.
+ */
 function createAddQuoteForm() {
   // Create input for quote text
   const quoteInput = document.createElement("input");
@@ -57,19 +67,20 @@ function createAddQuoteForm() {
   // Create Add Quote button
   const addBtn = document.createElement("button");
   addBtn.type = "button";
-  addBtn.innerHTML = "Add Quote";
+  addBtn.textContent = "Add Quote";
 
-  // Add click listener
+  // Add click listener (Advanced: linking the logic to the dynamic button)
   addBtn.addEventListener("click", addQuote);
 
-  // Append elements to the container
+  // Append elements to the container in the DOM
   addQuoteContainer.appendChild(quoteInput);
   addQuoteContainer.appendChild(categoryInput);
   addQuoteContainer.appendChild(addBtn);
 }
 
-// Event listener for Show New Quote button
-newQuoteBtn.addEventListener("click", displayRandomQuote);
+// Event listener for the "Show New Quote" button
+newQuoteBtn.addEventListener("click", showRandomQuote);
 
-// Initialize the form
+// Initialize the application: show a quote and build the form
+showRandomQuote();
 createAddQuoteForm();
