@@ -1,86 +1,98 @@
-// Array of quote objects
-let quotes = [
+
+// Initial Data: Load from Local Storage OR use defaults if empty
+let quotes = JSON.parse(localStorage.getItem('quotes')) || [
   { text: "The only limit to our realization of tomorrow is our doubts of today.", category: "Motivation" },
-  { text: "In the middle of difficulty lies opportunity.", category: "Inspiration" },
-  { text: "Life is what happens when you're busy making other plans.", category: "Life" }
+  { text: "In the middle of difficulty lies opportunity.", category: "Inspiration" }
 ];
 
-// DOM references
 const quoteDisplay = document.getElementById("quoteDisplay");
-const newQuoteBtn = document.getElementById("newQuote");
 const addQuoteContainer = document.getElementById("addQuoteContainer");
 
 /**
- * Step 2: Display a random quote
- * Function: showRandomQuote
+ * Step 1: PERSISTENCE
+ * Save the current quotes array to Local Storage
  */
+function saveQuotes() {
+  localStorage.setItem('quotes', JSON.stringify(quotes));
+}
+
 function showRandomQuote() {
+  if (quotes.length === 0) {
+    quoteDisplay.innerHTML = "No quotes available. Add some!";
+    return;
+  }
   const randomIndex = Math.floor(Math.random() * quotes.length);
   const quote = quotes[randomIndex];
-  
-  // Clear previous content and update
   quoteDisplay.innerHTML = `"${quote.text}" — <strong>${quote.category}</strong>`;
+  
+  // Optional: Session Storage to remember the last viewed quote
+  sessionStorage.setItem('lastQuote', JSON.stringify(quote));
 }
 
 /**
- * Step 3: Add a new quote to the array and update the view
+ * Step 2: EXPORT (JSON)
  */
-function addQuote() {
-  const textInput = document.getElementById("newQuoteText");
-  const categoryInput = document.getElementById("newQuoteCategory");
+function exportToJsonFile() {
+  const dataStr = JSON.stringify(quotes, null, 2); // Indented for readability
+  const blob = new Blob([dataStr], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "quotes.json";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url); // Clean up memory
+}
 
-  const text = textInput.value.trim();
-  const category = categoryInput.value.trim();
+/**
+ * Step 2: IMPORT (JSON)
+ */
+function importFromJsonFile(event) {
+  const fileReader = new FileReader();
+  fileReader.onload = function(event) {
+    try {
+      const importedQuotes = JSON.parse(event.target.result);
+      // Logic: Merge new quotes into existing ones
+      quotes.push(...importedQuotes);
+      saveQuotes();
+      showRandomQuote();
+      alert('Quotes imported and saved to Local Storage!');
+    } catch (e) {
+      alert('Error: Invalid JSON file.');
+    }
+  };
+  fileReader.readAsText(event.target.files[0]);
+}
+
+// Logic to add a new quote
+function addQuote() {
+  const text = document.getElementById("newQuoteText").value.trim();
+  const category = document.getElementById("newQuoteCategory").value.trim();
 
   if (text && category) {
-    // Add to quotes array
     quotes.push({ text, category });
-
-    // Update the display immediately to show the new quote
-    quoteDisplay.innerHTML = `"${text}" — <strong>${category}</strong>`;
-
-    // Clear inputs
-    textInput.value = "";
-    categoryInput.value = "";
-  } else {
-    alert("Please enter both quote and category.");
+    saveQuotes(); // Persistence!
+    showRandomQuote();
+    document.getElementById("newQuoteText").value = "";
+    document.getElementById("newQuoteCategory").value = "";
   }
 }
 
-/**
- * Step 2 & 3: Create the Add Quote form dynamically
- * This demonstrates advanced DOM manipulation.
- */
+// UI Initialization
 function createAddQuoteForm() {
-  // Create input for quote text
-  const quoteInput = document.createElement("input");
-  quoteInput.type = "text";
-  quoteInput.id = "newQuoteText";
-  quoteInput.placeholder = "Enter a new quote";
-
-  // Create input for category
-  const categoryInput = document.createElement("input");
-  categoryInput.type = "text";
-  categoryInput.id = "newQuoteCategory";
-  categoryInput.placeholder = "Enter quote category";
-
-  // Create Add Quote button
-  const addBtn = document.createElement("button");
-  addBtn.type = "button";
-  addBtn.textContent = "Add Quote";
-
-  // Add click listener (Advanced: linking the logic to the dynamic button)
-  addBtn.addEventListener("click", addQuote);
-
-  // Append elements to the container in the DOM
-  addQuoteContainer.appendChild(quoteInput);
-  addQuoteContainer.appendChild(categoryInput);
-  addQuoteContainer.appendChild(addBtn);
+  addQuoteContainer.innerHTML = `
+    <div style="margin-top:20px;">
+        <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
+        <input id="newQuoteCategory" type="text" placeholder="Enter category" />
+        <button onclick="addQuote()">Add Quote</button>
+    </div>
+  `;
 }
 
-// Event listener for the "Show New Quote" button
-newQuoteBtn.addEventListener("click", showRandomQuote);
+document.getElementById("newQuote").addEventListener("click", showRandomQuote);
 
-// Initialize the application: show a quote and build the form
-showRandomQuote();
+// Start
 createAddQuoteForm();
+showRandomQuote();

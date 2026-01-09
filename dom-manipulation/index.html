@@ -3,22 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Quote Generator</title>
+    <title>Vivi Quote Pro - Persistent Storage</title>
     <style>
-        body { font-family: sans-serif; padding: 20px; line-height: 1.6; }
-        #quoteDisplay { margin: 20px 0; padding: 15px; border-left: 5px solid #007bff; background: #f4f4f4; min-height: 50px; }
-        .form-container { margin-top: 30px; padding-top: 20px; border-top: 1px solid #ccc; }
-        input { margin: 5px; padding: 8px; }
+        body { font-family: 'Segoe UI', sans-serif; padding: 20px; background-color: #f9f9f9; }
+        #quoteDisplay { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 10px; }
+        .controls { margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap; }
+        button { cursor: pointer; padding: 8px 15px; border-radius: 4px; border: 1px solid #ddd; }
+        #exportBtn { background-color: #28a745; color: white; border: none; }
     </style>
 </head>
 <body>
     <h1>Dynamic Quote Generator</h1>
     
-    <div id="quoteDisplay"></div>
-    
+    <div id="quoteDisplay">Loading your inspiration...</div>
     <button id="newQuote">Show New Quote</button>
 
-    <div id="addQuoteContainer" class="form-container"></div>
+    <div id="addQuoteContainer"></div>
+
+    <div class="controls">
+        <button id="exportBtn" onclick="exportToJsonFile()">Export Quotes (JSON)</button>
+        <label for="importFile">Import Quotes: </label>
+        <input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)" />
+    </div>
 
     <script src="script.js"></script>
 </body>
