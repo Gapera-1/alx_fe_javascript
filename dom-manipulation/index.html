@@ -3,28 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vivi Quote Pro - Persistent Storage</title>
+    <title>Vivi Quote Filter Pro</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; padding: 20px; background-color: #f9f9f9; }
-        #quoteDisplay { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 10px; }
-        .controls { margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap; }
-        button { cursor: pointer; padding: 8px 15px; border-radius: 4px; border: 1px solid #ddd; }
-        #exportBtn { background-color: #28a745; color: white; border: none; }
+        body { font-family: 'Segoe UI', sans-serif; padding: 20px; max-width: 600px; margin: auto; }
+        #quoteDisplay { background: #fff; padding: 20px; border-radius: 8px; border: 1px solid #ddd; min-height: 60px; margin: 15px 0; }
+        .filter-section { margin-bottom: 20px; background: #eef2f7; padding: 15px; border-radius: 8px; }
+        select, input, button { padding: 10px; margin: 5px 0; border-radius: 4px; border: 1px solid #ccc; }
+        button { background-color: #007bff; color: white; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
     </style>
 </head>
 <body>
     <h1>Dynamic Quote Generator</h1>
+
+    <div class="filter-section">
+        <label for="categoryFilter">Filter by Category:</label>
+        <select id="categoryFilter" onchange="filterQuotes()">
+            <option value="all">All Categories</option>
+        </select>
+    </div>
     
-    <div id="quoteDisplay">Loading your inspiration...</div>
+    <div id="quoteDisplay"></div>
     <button id="newQuote">Show New Quote</button>
 
     <div id="addQuoteContainer"></div>
-
-    <div class="controls">
-        <button id="exportBtn" onclick="exportToJsonFile()">Export Quotes (JSON)</button>
-        <label for="importFile">Import Quotes: </label>
-        <input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)" />
-    </div>
 
     <script src="script.js"></script>
 </body>
