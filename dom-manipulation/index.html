@@ -2,58 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vivi | Dynamic Quote Generator</title>
+    <title>Dynamic Quote Generator</title>
     <style>
-        :root { --primary: #007bff; --success: #28a745; --bg: #f8f9fa; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); color: #333; line-height: 1.6; padding: 20px; max-width: 800px; margin: auto; }
-        h1 { color: var(--primary); text-align: center; }
-        
-        /* Sync Notification */
-        #syncStatus { padding: 10px; margin-bottom: 15px; border-radius: 5px; text-align: center; font-weight: bold; display: none; }
-        
-        /* Quote Display Area */
-        #quoteDisplay { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin: 20px 0; min-height: 80px; border-left: 8px solid var(--primary); }
-        
-        /* Controls Section */
-        .controls, .filter-section { background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        
-        input, select, button { padding: 12px; margin: 5px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
-        button { background-color: var(--primary); color: white; border: none; cursor: pointer; transition: 0.3s; }
-        button:hover { opacity: 0.8; }
-        .btn-secondary { background-color: #6c757d; }
-        .btn-export { background-color: var(--success); }
-        
-        .import-label { display: block; margin-top: 10px; font-weight: bold; }
+        #syncNotification { display: none; background: #d4edda; color: #155724; padding: 10px; margin: 10px 0; border: 1px solid #c3e6cb; }
     </style>
 </head>
 <body>
+    <h1>Dynamic Quote Generator</h1>
 
-    <h1>Vivi Quote Generator</h1>
+    <div id="syncNotification"></div>
 
-    <div id="syncStatus"></div>
-
-    <div class="filter-section">
-        <label for="categoryFilter"><strong>Filter by Category:</strong></label>
+    <div>
         <select id="categoryFilter" onchange="filterQuotes()">
             <option value="all">All Categories</option>
         </select>
         <button id="newQuote">Show New Quote</button>
     </div>
-    
-    <div id="quoteDisplay">Loading your inspiration...</div>
 
-    <div id="addQuoteContainer" class="controls">
-        <h3>Add a New Quote</h3>
-        </div>
-
-    <div class="controls">
-        <h3>Data Management</h3>
-        <button class="btn-export" onclick="exportToJsonFile()">Export Quotes (JSON)</button>
-        <hr>
-        <label class="import-label" for="importFile">Import Quotes from JSON:</label>
-        <input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)" />
-    </div>
+    <div id="quoteDisplay" style="margin: 20px 0;"></div>
+    <div id="addQuoteContainer"></div>
 
     <script src="script.js"></script>
 </body>
